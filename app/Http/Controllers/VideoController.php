@@ -16,7 +16,6 @@ class VideoController extends Controller
 {
     public function index(Request $request)
     {
-        // dd($request);
         $busqueda = trim($request->busqueda);
         // $videos = Video::select('videos.*')
         //     ->distinct()
@@ -104,7 +103,7 @@ class VideoController extends Controller
         if (Auth::user()->beneficio === 1) { //usuario tiene beneficio
             $request->validate([
                 'archivo' => 'required|mimes:mp4|max:1048576', // maximo de 1GB (tamaño en Kb)
-                'minutos' => 'max:2',  // maximo 30 minutos
+                'minutos' => 'max:30',  // maximo 30 minutos
                 'titulo' => 'required',
                 'descripcion' => 'required',
                 'grabacion' => 'required',
@@ -201,7 +200,6 @@ class VideoController extends Controller
     }
     public function update(Request $request, Video $video, UbicacionController $controladorUbicacion, PalabraController $controladorPalabras)
     {
-        // dd($request);
         $request->validate([
             'titulo' => 'required',
             'descripcion' => 'required',

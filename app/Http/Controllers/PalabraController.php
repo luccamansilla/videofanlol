@@ -9,7 +9,6 @@ class PalabraController extends Controller
 {
     public function store(Request $request, $video_id)
     {
-        // dd($request);
         $todasPalabras = explode('-', $request->palabrasClaves);
         foreach ($todasPalabras as $p) {
             $palabra = new Palabra;

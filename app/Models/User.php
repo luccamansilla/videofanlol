@@ -65,14 +65,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Residencia::class);
     }
-    public function beneficios()
-    {
-        return $this->hasMany(Beneficio::class);
-    }
-    public function notificaciones()
-    {
-        return $this->hasMany(Notificacion::class);
-    }
+
     public function videos()
     {
         return $this->hasMany(Video::class);
