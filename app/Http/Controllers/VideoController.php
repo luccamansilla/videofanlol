@@ -18,16 +18,30 @@ class VideoController extends Controller
     {
         // dd($request);
         $busqueda = trim($request->busqueda);
+        // $videos = Video::select('videos.*')
+        //     ->distinct()
+        //     ->join('users', 'videos.user_id', '=', 'users.id')
+        //     ->join('palabras', 'palabras.video_id', '=', 'videos.id')
+        //     ->where('titulo', 'LIKE', '%' . $busqueda . '%')
+        //     ->orWhere('users.username', 'LIKE', '%' . $busqueda . '%')
+        //     ->orWhere('palabras.palabra', 'LIKE', '%' . $busqueda . '%')
+        //     ->orWhere('videos.created_at', 'LIKE', '%' . $busqueda . '%')
+        //     ->orderBy('videos.created_at', 'desc')
+        //     ->paginate(6);
         $videos = Video::select('videos.*')
-            ->distinct()
-            ->join('users', 'videos.user_id', '=', 'users.id')
-            ->join('palabras', 'palabras.video_id', '=', 'videos.id')
-            ->where('titulo', 'LIKE', '%' . $busqueda . '%')
-            ->orWhere('users.username', 'LIKE', '%' . $busqueda . '%')
-            ->orWhere('palabras.palabra', 'LIKE', '%' . $busqueda . '%')
-            ->orWhere('videos.created_at', 'LIKE', '%' . $busqueda . '%')
+            ->whereIn('videos.id', function ($query) use ($busqueda) {
+                $query->select('videos.id')
+                    ->from('videos')
+                    ->join('users', 'videos.user_id', '=', 'users.id')
+                    ->join('palabras', 'palabras.video_id', '=', 'videos.id')
+                    ->where('titulo', 'LIKE', '%' . $busqueda . '%')
+                    ->orWhere('users.username', 'LIKE', '%' . $busqueda . '%')
+                    ->orWhere('palabras.palabra', 'LIKE', '%' . $busqueda . '%')
+                    ->orWhere('videos.created_at', 'LIKE', '%' . $busqueda . '%')
+                    ->groupBy('videos.id');
+            })
             ->orderBy('videos.created_at', 'desc')
-            ->get();
+            ->paginate(6);
         // esta consulta filtra los videos con la busqueda, teniendo en cuenta el titulo, usuario que suubio el video, palabras claves y fecha
         //consulta relizada en MySQL = 
         //SELECT DISTINCT videos.*

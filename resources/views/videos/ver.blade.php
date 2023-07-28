@@ -5,12 +5,12 @@
         <div class="container mx-auto mb-5">
             <div class="mt- mx-6 lg:flex lg:items-center">
 
-                <video class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-72 lg:h-96" id="video" autoplay controls>
+                <video class="object-cover w-full lg:mx-6 lg:w-1/2 rounded-xl h-60 lg:h-80" id="video" autoplay controls>
                     <source src="{{ asset('videos') }}/{{ $video->path }}" type="video/mp4">
                 </video>
 
                 <div class="mt-6 lg:w-1/2 lg:mt-0 lg:mx-6 ">
-                    <p class="text-sm text-black uppercase font-sans">{{ $video->fecha_grabacion }}</p>
+                    <p class="text-sm text-black uppercase font-sans">{{ $video->created_at->format('d/m/Y') }}</p>
 
                     <p class="block mt-4 text-sm font-semibold text-black hover:underline md:text-3xl">
                         {{ $video->titulo }}
@@ -29,29 +29,52 @@
                     </p>
 
                     <a href="#" onclick="openModal(true)" id="mostrarUbicacion"
-                        class="mt-1 inline-block text-blue-500 underline hover:text-blue-400">Ubicación de la
-                        grabación</a>
+                        class="mt-1 inline-block text-blue-500 underline hover:text-blue-400">Ubicación</a>
 
                     <div>
-                        <p class="mt-1 text-sm text-gray-700"> {{ $video->visualizaciones($video->id) }} Visualizaciones</p>
+                        <p class="lg:mt-6 mt-1 text-sm text-gray-700"> {{ $video->visualizaciones($video->id) }}
+                            Visualizaciones</p>
                     </div>
                 </div>
             </div>
         </div>
         <span class="ml-10 text-lg">Videos relacionados</span>
-        <div class="grid grid-cols-3 ">
+        <div class="grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3">
             {{-- VIDEOS RELACIONADOS --}}
             @foreach ($videos as $vid)
-                <div class="lg:col-span-1 col-span-3 flex justify-center">
+                <div
+                    class="w-full bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
                     <div class="relative">
-                        <a href="{{ route('video.ver', $vid->id) }}"><video
-                                class="object-cover w-80 my-10 lg:mx-6 lg:w-80 rounded-xl h-44 lg:h-44">
+                        <a href="{{ route('video.ver', $vid->id) }}"><video class=" rounded-xl w-full h-48" loop muted>
                                 <source src="{{ asset('videos') }}/{{ $vid->path }}" type="video/mp4">
                             </video></a>
-                        <a href="{{ route('video.ver', $video->id) }}"><span
-                                class="absolute bottom-0 left-0 right-0 py-2 px-4  text-black text-center">
-                                {{ $vid->titulo }}
-                            </span></a>
+                        <p
+                            class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
+                            {{ $video->visualizaciones($video->id) }} Visualizaciones</p>
+                        <p
+                            class="absolute bottom-0 right-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
+                            {{ $vid->duracion }}</p>
+                    </div>
+                    <a href="{{ route('video.ver', $vid->id) }}" class="hover:underline">
+                        <h1 class="mt-4 text-gray-800 text-2xl font-bold cursor-pointer">{{ $vid->titulo }}
+                        </h1>
+                    </a>
+                    <div class="my-2">
+                        <div class="flex space-x-1 items-center">
+                            <span>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mb-1.5"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="6" r="4" stroke="#1C274C"
+                                        stroke-width="1.5" />
+                                    <path
+                                        d="M19.9975 18C20 17.8358 20 17.669 20 17.5C20 15.0147 16.4183 13 12 13C7.58172 13 4 15.0147 4 17.5C4 19.9853 4 22 12 22C14.231 22 15.8398 21.8433 17 21.5634"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                </svg>
+                            </span>
+                            <p>{{ $video->user->username }}</p><br>
+                        </div>
+
                     </div>
                 </div>
             @endforeach

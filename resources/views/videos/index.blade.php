@@ -18,32 +18,115 @@
                         placeholder="Busque por título, usuario, palabras claves o fecha de subida(AAAA-MM-DD)"
                         id="idBuscador" name="busqueda" value="{{ $busqueda }}" />
                     <input type="submit" value="Buscar"
-                        class="bg-blue-500 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors" />
+                        class="bg-gray-900 p-2 rounded-tr-lg rounded-br-lg text-white font-semibold hover:bg-blue-800 transition-colors" />
                 </div>
             </form>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="contenidoVideos">
+    <div
+        class="md:px-4 md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 gap-5 place-content-center justify-center">
         @foreach ($videos as $video)
-            <div class="each mb-10 m-2 shadow-lg border-gray-800 bg-gray-100 relative">
-                <a href="{{ route('video.ver', $video->id) }}">
-                    <video class="clip w-96 h-72  rounded-lg " loop muted>
-                        <source src="{{ asset('videos') }}/{{ $video->path }}" type="video/mp4">
-                    </video>
+            <div
+                class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
+                <div class="relative">
+                    <a href="{{ route('video.ver', $video->id) }}"><video class=" rounded-xl w-full" loop muted>
+                            <source src="{{ asset('videos') }}/{{ $video->path }}" type="video/mp4">
+                        </video></a>
+                    <p
+                        class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
+                        {{ $video->visualizaciones($video->id) }} Visualizaciones</p>
+                </div>
+                <a href="{{ route('video.ver', $video->id) }}" class="hover:underline">
+                    <h1 class="mt-4 text-gray-800 text-2xl font-bold cursor-pointer">{{ $video->titulo }}
+                    </h1>
                 </a>
-                <div class="badge absolute top-0 left-0 bg-indigo-500 m-1 text-gray-200 p-1 px-2 text-xs font-bold rounded">
-                    {{ $video->visualizaciones($video->id) }} Visualizaciones</div>
+                <div class="my-2">
+                    <div class="flex space-x-1 items-center">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg"class="h-6 w-6 text-indigo-600 mb-1.5"
+                                viewBox="0 0 24 24" fill="none">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                                        stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M12 6V12" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M16.24 16.24L12 12" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </g>
 
-                <div class="badge absolute top-0 right-0 bg-gray-500 m-1 text-gray-200 p-1 px-2 text-xs font-bold rounded">
-                    {{ $video->duracion }}</div>
-                <div class="desc p-4 text-gray-800">
-                    <a href="{{ route('video.ver', $video->id) }}"><span
-                            class="title font-bold block cursor-pointer hover:underline text-xl">{{ $video->titulo }}</span></a>
-                    <span
-                        class="badge bg-indigo-500 text-blue-100 rounded px-1 text-xs font-bold cursor-pointer">{{ $video->user->username }}</span>
-                    <span class="description text-xs block py-2 border-gray-400 mb-2">{{ $video->descripcion }}</span>
+                            </svg>
+                        </span>
+                        <p>{{ $video->duracion }}</p>
+                    </div>
+                    <div class="flex space-x-1 items-center">
+                        <span>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mb-1.5" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle cx="12" cy="6" r="4" stroke="#1C274C" stroke-width="1.5" />
+                                <path
+                                    d="M19.9975 18C20 17.8358 20 17.669 20 17.5C20 15.0147 16.4183 13 12 13C7.58172 13 4 15.0147 4 17.5C4 19.9853 4 22 12 22C14.231 22 15.8398 21.8433 17 21.5634"
+                                    stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <p>{{ $video->user->username }}</p><br>
+                    </div>
+                    <div class="flex space-x-1 items-center">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#1C274C" class="h-6 w-6 text-indigo-600 mb-1.5"
+                                viewBox="0 0 24 24">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M21,2H3A1,1,0,0,0,2,3V21a1,1,0,0,0,1,1H21a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2ZM4,4H20V6H4ZM20,20H4V8H20ZM6,12a1,1,0,0,1,1-1H17a1,1,0,0,1,0,2H7A1,1,0,0,1,6,12Zm0,4a1,1,0,0,1,1-1h5a1,1,0,0,1,0,2H7A1,1,0,0,1,6,16Z" />
+                                </g>
+                            </svg>
+                        </span>
+                        <p>{{ $video->descripcion }}</p><br>
+                    </div>
                 </div>
             </div>
         @endforeach
     </div>
+    <div class="flex col-span-3 py-2">
+        <div class="max-w-2xl mx-auto">
+            <nav aria-label="Page navigation example">
+                <ul class="inline-flex -space-x-px">
+                    @if (!$videos->onFirstPage())
+                        <li>
+                            <a href="{{ $videos->previousPageUrl() }}"
+                                class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 ml-0 rounded-l-lg leading-tight py-2 px-3  dark:text-black dark:hover:bg-gray-900 dark:hover:text-white">Anterior</a>
+                        </li>
+                    @endif
+
+                    @foreach ($videos->getUrlRange(1, $videos->lastPage()) as $page => $url)
+                        @if ($page == $videos->currentPage())
+                            <li>
+                                <a
+                                    class="rounded-lg bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3  dark:text-black dark:hover:bg-gray-900 dark:hover:text-white">{{ $page }}</a>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ $url }}"
+                                    class="rounded-md bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 leading-tight py-2 px-3  dark:text-black dark:hover:bg-gray-900 dark:hover:text-white">{{ $page }}</a>
+                            </li>
+                        @endif
+                    @endforeach
+
+                    @if ($videos->hasMorePages())
+                        <li>
+                            <a href="{{ $videos->nextPageUrl() }}"
+                                class="bg-white border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 rounded-r-lg leading-tight py-2 px-3  dark:text-black dark:hover:bg-gray-900 dark:hover:text-white">Siguiente</a>
+                        </li>
+                    @endif
+                </ul>
+            </nav>
+        </div>
+    </div>
+
 @endsection
