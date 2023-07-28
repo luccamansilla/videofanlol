@@ -20,28 +20,13 @@
             color: #040608;
         }
     </style>
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
-
-
-    {{-- Formulario 
-        Consideraciones::
-        La subida de videos tiene las siguientes reestricciones/variables
-            -Título                         x
-            -Descripcion                    x
-            -Palabras claves (maximo 10)    x
-            -fecha de grabacion             x
-            -lugar donde fue registrado (ubicacion con google maps) x
-            -Fecha y hora de subida a la aplicacion (created_at)
-            -tipo:MP4
-            -duracion maxima:10min
-            -tamaño maximo:500Mb
-            -
-        --}}
-    {{-- Mensaje del beneficio --}}
     <div class="progress" style="display: none;" id="progressBar">
-        <div class="bar"></div>
-        <div class="percent">0%</div>
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0"
+            aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            <span class="percent">0%</span>
+        </div>
     </div>
+    {{-- Mensaje del beneficio --}}
     @if ($user->beneficio)
         <div class=" bg-gray-50 flex flex-col justify-center relative overflow-hidden">
             <div class="py-2">
@@ -76,9 +61,6 @@
                         <p class="font-medium text-lg">Ingrese los datos del video.</p>
                         <p>Todos los campos son necesarios.</p>
                     </div>
-                    {{-- <div id="progress-bar" class="progress-bar col-span-5" hidden></div> --}}
-                    {{-- TODO: CONECTARLO CON EL CONTROLADOR Y SUBIRLO A LA BASE DE DATOS --}}
-
                     <div class="lg:col-span-2">
                         <div class="grid gap-2 gap-y-1 text-sm grid-cols-1 md:grid-cols-5">
                             <div class="md:col-span-5">
@@ -93,7 +75,6 @@
                                     {{ $errors->first('titulo') }}
                                 </div>
                             @endif
-
 
                             <div class="md:col-span-3 md:row-span-3">
                                 <x-label for="descripcion">Descripción</x-label>
@@ -155,8 +136,6 @@
                                 <x-classicbutton type="button" onclick="openModal(true)" id="botonModal">Palabras claves
                                 </x-classicbutton>
                                 <span name="error-palabrasClaves"></span>
-                                {{-- <x-input type="text" name="palabrasClaves" id="palabrasClaves"
-                                    class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" /> --}}
                                 <span id="error-palabrasClaves" class="text-red-500"></span>
                             </div>
                             <div class="md:col-span-5 text-right">
@@ -296,15 +275,12 @@
                     map: mapa,
                     draggable: true
                 });
-
                 // Obtener la latitud y longitud del marcador
                 var latitud = event.latLng.lat();
                 var longitud = event.latLng.lng();
-
-                console.log(latitud);
-                console.log(longitud);
-
-                // Actualizar los campos ocultos
+                // console.log(latitud);
+                // console.log(longitud);
+                // Actualizo los campos ocultos
                 document.getElementById('latitud').value = latitud;
                 document.getElementById('longitud').value = longitud;
             });
@@ -315,13 +291,13 @@
     </script>
     {{-- SCRIPTS PARA BARRA DE CARGA --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"> --}}
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
         integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous">
     </script>
     {{-- BARRA DE CARGA --}}
     <script>
+        //Funcion para mandar el formulario mediante ajax y mostrar la barra de carga
         $(document).ready(function() {
             var bar = $('.bar');
             var percent = $('.percent');
@@ -331,10 +307,12 @@
                 $('html, body').animate({
                     scrollTop: $('#progressBar').offset().top
                 }, 500);
+                //Obtengo los minutos, el tamaño del video y si tiene beneficio el usuario para hacer las validaciones previas a enviar 
                 var minutos = parseInt($('#minutos').val());
                 var beneficio = {{ Auth::user()->beneficio }};
                 var tamaño = document.getElementById('tamaño').value;
-                console.log(tamaño);
+
+                // console.log(tamaño);
                 if (beneficio) {
                     if (minutos >= 30 || tamaño >
                         1048576000) { // se pasa de lo permitido con beneficio  (tamaño en bytes)
@@ -348,7 +326,7 @@
                     }
                 } else {
                     if (minutos >= 10 || tamaño >
-                        512000000) { // se pasa de lo permitido sin beneficio  (tamaño e bytes)
+                        512000000) { // se pasa de lo permitido sin beneficio  (tamaño en bytes)
                         Swal.fire({
                             icon: 'warning',
                             title: 'El video pasa los limites permitidos.',
@@ -361,6 +339,8 @@
                 var form = $(this);
                 var formData = new FormData(form[0]);
 
+                //debido a que mandando el formulario de forma tradicional con laravel, no tengo indicio de que porcentaje tiene la carga
+                //Obtengo la informacion del formulario y lo mando mediante ajax para que sea intuitiva la carga. 
                 $.ajax({
                     url: form.attr('action'),
                     type: form.attr('method'),
@@ -378,16 +358,17 @@
                         xhr.upload.addEventListener("progress", function(evt) {
                             if (evt.lengthComputable) {
                                 var percentComplete = (evt.loaded / evt.total) * 100;
-                                var percentVal = Math.floor(percentComplete) +
-                                    '%'; // solo obtengo los numeros enteros del porcentaje
-                                bar.width(percentVal);
-                                percent.html(percentVal);
+                                $(".progress-bar").attr("aria-valuenow",
+                                    percentComplete
+                                ); // Actualizar el valor del atributo aria-valuenow
+                                $(".progress-bar").css("width", percentComplete +
+                                    "%"); // Actualizar el ancho de la barra de progreso
+                                $(".percent").text(Math.floor(percentComplete) + "%");
                             }
                         }, false);
                         return xhr;
                     },
                     complete: function(xhr) {
-                        // console.log("STATUS " + xhr.status);
                         $(".progress")
                             .hide(); // Ocultar la barra de carga una vez completado (exitosamente o con error)
 
@@ -408,10 +389,8 @@
                             if (xhr.status === 422) {
                                 var response = JSON.parse(xhr.responseText);
                                 var errors = response.errors;
-                                // console.log(errors);
                                 $('.error-message').remove();
                                 for (var key in errors) {
-                                    // console.log(key);
                                     if (key == 'palabrasClaves') {
                                         var errorMessage = errors[key][0];
                                         var inputField = $('span[name="error-' + key +
@@ -448,98 +427,6 @@
             });
         });
     </script>
-    <script>
-        // $(document).ready(function() {
-        //     // Obtiene el formulario y el elemento de la barra de carga
-        //     var form = $('#idFormulario');
-        //     var progressBar = $('#progress-bar');
-
-        //     // Asocia el evento 'submit' del formulario
-        //     form.on('submit', function(event) {
-        //         // Evita que el formulario se envíe de forma tradicional
-        //         event.preventDefault();
-
-        //         // Crea una instancia de FormData para enviar los datos del formulario
-        //         var formData = new FormData(this);
-
-        //         // Muestra la barra de carga
-        //         progressBar.show();
-
-        //         // Realiza la solicitud AJAX para cargar el video
-        //         $.ajax({
-        //             url: form.attr('action'),
-        //             method: form.attr('method'),
-        //             data: formData,
-        //             processData: false,
-        //             contentType: false,
-        //             xhr: function() {
-        //                 var xhr = new window.XMLHttpRequest();
-
-        //                 // Monitorea el progreso de carga
-        //                 xhr.upload.addEventListener('progress', function(event) {
-        //                     if (event.lengthComputable) {
-        //                         var percent = Math.round((event.loaded / event.total) *
-        //                             100);
-
-        //                         // Actualiza el estilo de la barra de carga con el porcentaje completado
-        //                         progressBar.css('width', percent + '%');
-        //                         progressBar.text(percent + '%');
-        //                     }
-        //                 }, false);
-
-        //                 return xhr;
-        //             },
-        //             success: function(response) {
-        //                 // Obtiene la URL de redirección del campo oculto en el formulario
-        //                 var redirectUrl = form.attr('action');
-
-        //                 // Maneja la respuesta exitosa
-        //                 progressBar.hide();
-
-        //                 // Redirecciona a la ruta deseada
-        //                 window.location.href = redirectUrl;
-        //     },
-        //     error: function(xhr, status, error) {
-        //         progressBar.hide();
-        //         if (xhr.status === 422) {
-        //             var response = JSON.parse(xhr.responseText);
-        //             var errors = response.errors;
-
-        //             if (errors) {
-        //                 // Recorrer todos los campos de entrada en el formulario
-        //                 var form = document.getElementById('idFormulario');
-        //                 var inputs = form.querySelectorAll('input');
-        //                 console.log(inputs.length);
-
-        //                 for (var i = 0; i < inputs.length; i++) {
-        //                     var input = inputs[i];
-        //                     var fieldName = input.name;
-        //                     console.log(fieldName);
-        //                     // Verificar si el campo está vacío
-        //                     if (!input.value) {
-        //                         // Mostrar mensaje de error para el campo vacío
-        //                         var errorField = document.getElementById(
-        //                             'error-' + fieldName);
-        //                         console.log(errorField.value);
-        //                         errorField.textContent =
-        //                             'Este campo es obligatorio';
-        //                         errorField.style.display = 'block';
-        //                     }
-        //                 }
-        //             } else {
-        //                 // Mostrar un mensaje de error general
-        //                 console.log(response.message);
-        //                 alert(response.message);
-        //             }
-        //         } else {
-        //             console.log('Error de solicitud:', xhr.status);
-        //         }
-
-        //             }
-        //         });
-        //     });
-        // })
-    </script>
     {{-- Palabras claves --}}
     <script>
         var palabras = [] // creo array global para guardar todas las palabras
@@ -570,6 +457,7 @@
             var muestroPalabras = document.getElementById('muestroPalabras');
             muestroPalabras.innerHTML = ''; // Limpiar el contenido previo
             var contador = 1;
+            //para cada palabra ingresada, la va a mostrar en el modal con las clases agregadas.
             palabras.forEach(function(palabra) {
                 var span = document.createElement('span');
                 var salto = document.createElement('br');
@@ -580,7 +468,7 @@
                 span.classList.add('col-span-3');
                 span.style.cursor = "pointer";
                 span.textContent = contador + " - " + palabra;
-
+                //Si se le hace click a alguna palabra, la saca del array
                 span.addEventListener('click', function() {
                     var indice = palabras.indexOf(palabra);
                     if (indice !== -1) {
@@ -588,12 +476,11 @@
                         actualizarPalabras();
                     }
                 });
-
                 muestroPalabras.appendChild(span);
                 muestroPalabras.appendChild(salto);
                 contador++;
             });
-            console.log(muestroPalabras);
+            // console.log(muestroPalabras);
         }
     </script>
 @endsection

@@ -20,7 +20,6 @@
             color: #040608;
         }
     </style>
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     {{-- Mensaje del beneficio --}}
     <div class="progress" style="display: none;" id="progressBar">
         <div class="bar"></div>
@@ -236,7 +235,7 @@
 
             // Agregar un evento de clic en el mapa
             mapa.addListener('click', function(event) {
-                // Eliminar cualquier marcador existente
+                // Eliminar marcador si es que lo hay
                 if (marcador) {
                     marcador.setMap(null);
                 }
@@ -252,9 +251,8 @@
                 var latitud = event.latLng.lat();
                 var longitud = event.latLng.lng();
 
-                console.log(latitud);
-                console.log(longitud);
-
+                // console.log(latitud);
+                // console.log(longitud);
                 // Actualizar los campos ocultos
                 document.getElementById('latitud').value = latitud;
                 document.getElementById('longitud').value = longitud;
@@ -263,7 +261,6 @@
     </script>
     {{-- SCRIPTS PARA BARRA DE CARGA --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"> --}}
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"
         integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous">

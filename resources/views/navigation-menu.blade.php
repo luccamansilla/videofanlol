@@ -18,12 +18,12 @@
             @endauth
         </ul>
 
-        <div class="hidden xl:flex items-center space-x-5">
+        <div class="hidden xl:flex items-center space-x-5 items-center">
             <!--   DROPDOWN   -->
             @auth
                 <div class="relative">
                     <button id="dropdownInformationButton" data-dropdown-toggle="dropdownInformation"
-                        class="text-white focus:ring-4 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
+                        class="text-white  hover:text-gray-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center"
                         type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-500" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
@@ -34,25 +34,24 @@
 
                     <!-- Dropdown menu -->
                     <div id="dropdownInformation"
-                        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute right-0 mt-2">
-                        <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-gray-700 divide-gray-600 absolute right-0 mt-2">
+                        <div class="px-4 py-3 text-sm text-white">
                             <div>{{ Auth::user()->username }}</div>
                             <div class="font-medium truncate">{{ Auth::user()->email }}</div>
                         </div>
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="dropdownInformationButton">
+                        <ul class="py-2 text-sm text-white" aria-labelledby="dropdownInformationButton">
                             <li>
                                 <a href="{{ route('video.inicio') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Inicio</a>
+                                    class="block px-4 py-2  hover:bg-gray-300 hover:text-black ">Inicio</a>
                             </li>
                             <li>
                                 <a href="{{ route('profile.show') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                                    class="block px-4 py-2 hover:bg-gray-300 hover:text-black ">Perfil</a>
                             </li>
                         </ul>
                         <div class="py-2">
                             <a href="{{ route('cerrarSesion') }}"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Cerrar
+                                class="block px-4 py-2 hover:bg-gray-300 hover:text-black ">Cerrar
                                 Sesión</a>
                         </div>
                     </div>
@@ -78,31 +77,31 @@
         </svg>
     </button>
     <div id="dropdownResponsive"
-        class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600 absolute right-0 mt-16">
-        <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+        class="z-10 hidden divide-y divide-gray-100 rounded-lg shadow w-44 bg-gray-700  absolute right-0 mt-16">
+        <div class="px-4 py-3 text-sm text-white">
             @auth
                 <div>{{ Auth::user()->username }}</div>
                 <div class="font-medium truncate">{{ Auth::user()->email }}</div>
             @else
-                <a href="{{ route('login') }}" class="hover:underline">
+                <a href="{{ route('login') }}" class="hover:underline hover:bg-gray-300 hover:text-black">
                     <div>Iniciar Sesion</div>
                 </a>
             @endauth
         </div>
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownInformationResponsive">
+        <ul class="py-2 text-sm text-white" aria-labelledby="dropdownInformationResponsive">
 
             <li>
                 <a href="{{ route('video.inicio') }}"
-                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Inicio</a>
+                    class="block px-4 py-2 hover:bg-gray-300 hover:text-black">Inicio</a>
             </li>
             @auth
                 <li>
                     <a href="{{ route('profile.show') }}"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Perfil</a>
+                        class="block px-4 py-2 hover:bg-gray-300 hover:text-black">Perfil</a>
                 </li>
                 <li>
                     <a href="{{ route('video.misvideos', Auth::user()->username) }}"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mis
+                        class="block px-4 py-2 hover:bg-gray-300 hover:text-black">Mis
                         videos</a>
                 </li>
             @endauth
@@ -124,7 +123,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Mostrar el menú desplegable al hacer clic en el botón
         $("#dropdownInformationButton").on("click", function() {
             $("#dropdownInformation").toggleClass("hidden");
         });
@@ -132,7 +130,6 @@
 </script>
 <script>
     $(document).ready(function() {
-        // Mostrar el menú desplegable al hacer clic en el botón
         $("#dropdownInformationResponsive").on("click", function() {
             $("#dropdownResponsive").toggleClass("hidden");
         });

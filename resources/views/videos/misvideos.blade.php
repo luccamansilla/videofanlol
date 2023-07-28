@@ -157,7 +157,6 @@
         </div>
     @endif
     {{-- MODAL PALABRAS CLAVES --}}
-    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"> --}}
     <script>
         function openModal(value, id) {
             const modalId = `#modal_${id}`;
@@ -219,7 +218,6 @@
                     var method = document.createElement("input");
                     method.type = "hidden";
                     method.name = "_method";
-                    // method.value = "POST";
 
                     //le asigno el idVideo que esta como parametro al input
                     var inputId = document.createElement("input");
