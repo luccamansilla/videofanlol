@@ -50,7 +50,7 @@
                             </video></a>
                         <p
                             class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
-                            {{ $video->visualizaciones($video->id) }} Visualizaciones</p>
+                            {{ $vid->visualizaciones($vid->id) }} Visualizaciones</p>
                         <p
                             class="absolute bottom-0 right-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
                             {{ $vid->duracion }}</p>
